@@ -3,9 +3,6 @@ Rails.application.routes.draw do
     resources :members, shallow: true
   end
   resources :projects do
-    resources :members, only: [:create, :new, :index, :update]
-  end
-  resources :projects do
     resources :member_projects, only: [:create, :index, :update]
   end
   resources :members, only: [:show, :edit, :update, :destroy, :index]
