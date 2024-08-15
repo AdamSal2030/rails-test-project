@@ -2,7 +2,11 @@ class MembersController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create, :destroy, :update]
 
   def destroy
-
+    @member=Member.find(params[:id])
+    @member.destroy
+    respond_to do |format|
+      format.json {render json: { message:"memeber destroyed"}}
+    end
   end
 
   def index
