@@ -1,11 +1,18 @@
 class MembersController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create, :destroy, :update]
+  rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
 
   def destroy
-    @member=Member.find(params[:id])
-    @member.destroy
-    respond_to do |format|
-      format.json {render json: { message:"memeber destroyed"}}
+    @member=Member.find_by(id: params[:id])
+    if @member
+      @member.destroy
+      respond_to do |format|
+        format.json {render json: { message:"memeber destroyed"}}
+      end
+    else
+      respond_to do |format|
+        format.json {render json: {message: "Member not found"}}
+      end
     end
   end
 
@@ -22,22 +29,39 @@ class MembersController < ApplicationController
   end
 
   def show
-    @members = Member.where(team_id: params[:team_id])
-    respond_to do |format|
-      format.json
+    if params[:team_id]
+      @members = Member.where(team_id: params[:team_id])
+      respond_to do |format|
+        format.json { render json: @members }
+      end
+    else
+      @member = Member.find_by(id: params[:id])
+      respond_to do |format|
+        if @member
+          format.json { render json: { first_name: @member.first_name, last_name: @member.last_name } }
+        else
+          format.json { render json: { message: "No member found" }, status: :not_found }
+        end
+      end
     end
   end
+  
 
   def update
-    @member = Member.find(params[:id])
-
-    if @member.update(member_params)
-      respond_to do |format|
-        format.json { render json: @member, status: :ok }
+    @member = Member.find_by(id: params[:id])
+    if @member
+      if @member.update(member_params)
+        respond_to do |format|
+          format.json { render json: @member, status: :ok }
+        end
+      else
+        respond_to do |format|
+          format.json { render json: @member.errors, status: :unprocessable_entity }
+        end
       end
     else
       respond_to do |format|
-        format.json { render json: @member.errors, status: :unprocessable_entity }
+        format.json {render json: {message: "Member not found"}}
       end
     end
   end
@@ -55,10 +79,14 @@ class MembersController < ApplicationController
     end
   end
 
+  def render_unprocessable_entity(exception)
+    render json: { message: exception.message }, status: :unprocessable_entity
+  end
+
   private
 
   def member_params
-    params.require(:member).permit(:first_name, :last_name, :city, :state, :country)
+    params.require(:member).permit(:first_name, :last_name, :city, :state, :country, :team_id)
   end
 
 

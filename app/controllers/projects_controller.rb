@@ -14,38 +14,61 @@ class ProjectsController < ApplicationController
   end
 
   def update
-    @project=Project.find(params[:id])
-    @project.name=params[:name]
-    if @project.save
+    @project=Project.find_by(id: params[:id])
+    if @project
+      if @project.update(project_params)
+        respond_to do |format|
+          format.json
+        end
+      else
+        respond_to do |format|
+          format.json { render json: @project.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      respond_to do |format|
+        format.json {render json: {message: "No project with this id exist"}}
+      end
+    end      
+  end
+
+  def index
+    @project=Project.all
+    if @project
       respond_to do |format|
         format.json
       end
     else
       respond_to do |format|
-        format.json { render json: @project.errors, status: :unprocessable_entity }
+        format.json {render json: {message: "No Project exist"}}
       end
     end
   end
 
-  def index
-    @project=Project.all
-    respond_to do |format|
-      format.json
-    end
-  end
-
   def show
-    @project=Project.find(params[:id])
-    respond_to do |format|
-      format.json
+    @project=Project.find_by(id: params[:id])
+    if @project
+      respond_to do |format|
+        format.json
+      end
+    else
+      respond_to do |format|
+        format.json {render json: {message: "Project not found"}}
+      end
     end
   end
 
   def destroy
-    @project=Project.find(params[:id])
-    @project.destroy
-    respond_to do |format|
-      format.json
+    @project=Project.find_by(id: params[:id])
+    if @project
+      @project.destroy
+      respond_to do |format|
+        format.json
+      end
+    else
+      respond_to do |format|
+        format.json {render json: {message: "Project not found"}}
+      end
     end
   end
 
