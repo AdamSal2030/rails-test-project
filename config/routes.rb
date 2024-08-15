@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources :projects do
     resources :member_projects, only: [:create, :index, :update]
   end
-  resources :members, only: [:show, :edit, :update, :destroy]
+  resources :members, only: [:show, :edit, :update, :destroy, :index]
   resources :projects
   resources :tests
   resources :member_projects

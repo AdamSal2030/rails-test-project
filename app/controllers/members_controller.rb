@@ -5,14 +5,19 @@ class MembersController < ApplicationController
 
   end
 
-  def show
+  def index
     @member=Member.all
+    if @member.count==0
+      format.json {render json: { message: "no member found "}}
+  
+    else
     respond_to do |format|
       format.json
     end
+    end
   end
 
-  def index
+  def show
     @members = Member.where(team_id: params[:team_id])
     respond_to do |format|
       format.json
