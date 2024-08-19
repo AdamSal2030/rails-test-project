@@ -19,7 +19,6 @@ class MemberProjectsController < ApplicationController
   end
 
   def index
-    byebug
     @project = Project.find_by(id: params[:project_id])
     @member=@project.members
     respond_to do |format|
