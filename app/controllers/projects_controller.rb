@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
       end
     else
       respond_to do |format|
-        format.json { render json: { message: "Failure to create", errors: @member.errors }}
+        format.json { render json: { message: "Failure to create", errors: @project.errors }}
       end
     end
   end
@@ -40,7 +40,7 @@ class ProjectsController < ApplicationController
       end
     else
       respond_to do |format|
-        format.json {render json: {message: "No Project exist"}}
+        format.json { render json: { message: "No Project exist" }}
       end
     end
   end

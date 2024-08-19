@@ -61,7 +61,7 @@ class TeamsController < ApplicationController
 
   def create
     @team = Team.new(team_params) 
-    if @team.save
+    if @team.save!
       respond_to do |format|
         format.json { render json: @team, status: :created }
       end
