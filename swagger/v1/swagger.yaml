@@ -1,0 +1,129 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/teams":
+    post:
+      summary: Creates a team
+      tags:
+      - Teams
+      parameters: []
+      responses:
+        '201':
+          description: team created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+              - name
+    get:
+      summary: Get all the teams
+      tags:
+      - Teams
+      responses:
+        '200':
+          description: teams retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                  required:
+                  - id
+                  - name
+        '404':
+          description: no teams found
+  "/teams/{id}":
+    put:
+      summary: Updates a team
+      tags:
+      - Teams
+      parameters:
+      - name: id
+        in: path
+        description: Team ID
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: team updated
+        '404':
+          description: team not found
+        '422':
+          description: unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+              - name
+    get:
+      summary: Show a specific team
+      tags:
+      - Teams
+      parameters:
+      - name: id
+        in: path
+        description: Team ID
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Team found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: Team A
+                required:
+                - id
+                - name
+        '404':
+          description: Team not found
+    delete:
+      summary: Delete a specific team
+      tags:
+      - Teams
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: Team deleted
+        '404':
+          description: Team not found
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com

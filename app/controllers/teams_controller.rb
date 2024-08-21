@@ -1,6 +1,6 @@
 class TeamsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create, :destroy, :update]
-  rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
+  
 
 
   def show
@@ -72,9 +72,7 @@ class TeamsController < ApplicationController
     end
   end
 
-  def render_unprocessable_entity(exception)
-    render json: { message: exception.message }, status: :unprocessable_entity
-  end
+ 
 
   private
 
