@@ -51,35 +51,6 @@ RSpec.describe "Members", type: :request do
     end
   end
 
-  describe "GET /members?team_id=:team_id" do
-    let!(:team1) { Team.create(name: "Team 1") }
-    let!(:team2) { Team.create(name: "Team 2") }
-    let!(:member1) { Member.create(first_name: "Adam", last_name: "Saleem", team: team1) }
-    let!(:member2) { Member.create(first_name: "Eve", last_name: "Smith", team: team1) }
-
-    context "when members for the team exist" do
-      it "returns members belonging to the team" do
-        get members_path(team_id: team1.id), as: :json
-        expect(response).to be_successful
-        expect(response.content_type).to eq('application/json; charset=utf-8')
-
-        json_response = JSON.parse(response.body)
-        expect(json_response.size).to eq(2)
-        expect(json_response.map { |m| m['first_name'] }).to include(member1.first_name, member2.first_name)
-      end
-    end
-
-    context "when no members for the team exist" do
-      it "returns an empty array" do
-        get members_path(team_id: team2.id), as: :json
-        expect(response).to be_successful
-        expect(response.content_type).to eq('application/json; charset=utf-8')
-
-        json_response = JSON.parse(response.body)
-        expect(json_response).to be_empty
-      end
-    end
-  end
 
   describe "PATCH /members/:id" do
     let!(:team) { Team.create(name: "Team 1") }
@@ -158,7 +129,7 @@ RSpec.describe "Members", type: :request do
       it "destroys the member and returns a success response" do
         delete member_path(member), as: :json
         expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)['message']).to eq('memeber destroyed')
+        expect(JSON.parse(response.body)['message']).to eq('member destroyed')
         expect(Member.find_by(id: member.id)).to be_nil
       end
     end

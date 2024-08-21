@@ -7,7 +7,7 @@ class MembersController < ApplicationController
     if @member
       @member.destroy
       respond_to do |format|
-        format.json {render json: { message:"memeber destroyed"}}
+        format.json {render json: { message:"member destroyed"}}
       end
     else
       respond_to do |format|
@@ -17,20 +17,8 @@ class MembersController < ApplicationController
   end
 
   def index
-    if params[:team_id]
-      @members = Member.where(team_id: params[:team_id])
-      if @members
-        respond_to do |format|
-          format.json { render json: @members}
-        end
-      else
-        respond_to do |format|
-          format.json {render json: @members}
-        end
-      end
-    else
-      @member=Member.all
-      if @member.count==0
+    @member=Member.all
+     if @member.count==0
         respond_to do |format|
           format.json {render json: { message: "No members found"}, status: :not_found}
         end
@@ -39,7 +27,6 @@ class MembersController < ApplicationController
           format.json { render json: @member, status: :ok }
         end
       end
-    end
   end
 
   def show
@@ -57,16 +44,9 @@ class MembersController < ApplicationController
   def update
     @member = Member.find_by(id: params[:id])
     if @member
-      if @member.update(member_params)
+      if @member.update(create_params)
         respond_to do |format|
-          format.json { render json: {
-            first_name: @member.first_name,
-            last_name: @member.last_name,
-            city: @member.city,
-            state: @member.state,
-            team_id: @member.team_id,
-            country: @member.country
-          }, status: :ok }
+          format.json
         end
       else
         respond_to do |format|
@@ -81,7 +61,7 @@ class MembersController < ApplicationController
   end
 
   def create
-    @member = Member.new(member_params.merge(team_id: params[:team_id]))
+    @member = Member.new(create_params.merge(team_id: params[:team_id]))
     if @member.save
       respond_to do |format|
         format.json { render json: @member, status: :created }
@@ -99,7 +79,7 @@ class MembersController < ApplicationController
 
   private
 
-  def member_params
+  def create_params
     params.require(:member).permit(:first_name, :last_name, :city, :state, :country, :team_id)
   end
 

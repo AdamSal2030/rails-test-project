@@ -4,7 +4,7 @@ RSpec.describe "MemberProjects", type: :request do
   describe "POST /projects/:project_id/member_projects" do
     let!(:team) { Team.create(name: "Development Team") }
     let!(:project) { Project.create(name: "Test Project") }
-    let!(:member) { Member.create(first_name: "John", last_name: "Doe", team_id: team.id) }
+    let!(:member) { Member.create(first_name: "Adam", last_name: "Saleem", team_id: team.id) }
     let(:headers) { { "Content-Type" => "application/json" } }
     
     context "when the member is already part of the project" do

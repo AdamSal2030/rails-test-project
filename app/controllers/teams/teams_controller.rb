@@ -32,7 +32,7 @@ class TeamsController < ApplicationController
   def update
     @teams=Team.find_by(id: params[:id])
     if @teams
-      @teams.update!(team_params)
+      @teams.update!(create_params)
       respond_to do |format|
         format.json
       end
@@ -60,7 +60,7 @@ class TeamsController < ApplicationController
   end
 
   def create
-    @team = Team.new(team_params) 
+    @team = Team.new(create_params) 
     if @team.save
       respond_to do |format|
         format.json { render json: @team, status: :created }
@@ -78,7 +78,7 @@ class TeamsController < ApplicationController
 
   private
 
-  def team_params
+  def create_params
     params.require(:team).permit(:name) 
   end
       

@@ -7,6 +7,10 @@ Rails.application.routes.draw do
   end
   resources :members, only: [:show, :edit, :update, :destroy, :index]
   resources :projects
+
+  resources :teams do
+    resources :team_members, only: [:index]
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

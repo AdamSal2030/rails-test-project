@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create, :update, :destroy]
   def create 
-    @project=Project.new(project_params)
+    @project=Project.new(create_params)
     if @project.save
       respond_to do |format|
         format.json
@@ -16,7 +16,7 @@ class ProjectsController < ApplicationController
   def update
     @project=Project.find_by(id: params[:id])
     if @project
-      if @project.update(project_params)
+      if @project.update(create_params)
         respond_to do |format|
           format.json
         end
@@ -75,7 +75,7 @@ class ProjectsController < ApplicationController
 
 
   private
-  def project_params
+  def create_params
     params.require(:project).permit(:name) 
   end
 
