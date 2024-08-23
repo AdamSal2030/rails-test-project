@@ -1,2 +1,4 @@
-json.id @team.id
-json.name @team.name
+# frozen_string_literal: true
+
+json.id @teams.id
+json.name @teams.name

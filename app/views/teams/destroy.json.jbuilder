@@ -1,1 +1,3 @@
-json.message "operation successful"
+# frozen_string_literal: true
+
+json.message 'operation successful'

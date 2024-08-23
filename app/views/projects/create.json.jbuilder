@@ -1,4 +1,4 @@
-json.project do
- json.id @project.id
-  json.name @project.name
-end
+# frozen_string_literal: true
+
+json.name @project.name
+json.id @project.id
