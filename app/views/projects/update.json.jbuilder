@@ -1,3 +1,5 @@
+# frozen_string_literal: true
 
 json.name @project.name
-json.message "updatation success"
+json.id @project.id
+json.message 'updatation success'

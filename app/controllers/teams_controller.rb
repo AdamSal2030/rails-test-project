@@ -1,88 +1,36 @@
-class TeamsController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:create, :destroy, :update]
-  
+# frozen_string_literal: true
 
+class TeamsController < ApplicationController
+  before_action :set_team, only: %i[update show destroy]
 
   def show
-    @team=Team.find_by(id: params[:id])
-    if@team
-      respond_to do |format|
-        format.json
-      end
-    else
-      respond_to do |format|
-        format.json {render json: {message: "Team not found"}}
-      end
-    end
-      
+    @teams
   end
+
   def index
-    @teams=Team.all
-    if@teams.count==0
-      respond_to do |format|
-        format.json {render json: {message: "No team found"}, status: :not_found}
-      end
-    else
-      respond_to do |format|
-        format.json 
-      end
-    end
+    @teams = Team.all
   end
 
   def update
-    @teams=Team.find_by(id: params[:id])
-    if @teams
-      @teams.update!(create_params)
-      respond_to do |format|
-        format.json
-      end
-    else
-      respond_to do |format|
-        format.json {render json: {message: "No team with this id exist"}}
-      end
-    end
+    @teams.update!(create_params)
   end
 
-
-
   def destroy
-    @teams=Team.find_by(id: params[:id])
-    if @teams
-      @teams.destroy
-      respond_to do |format|
-        format.json
-      end
-    else
-      respond_to do |format|
-        format.json {render json: {message: "No team with this id exist"}}
-      end
-    end
+    @teams.destroy
   end
 
   def create
-    @team = Team.new(create_params) 
-    if @team.save
-      respond_to do |format|
-        format.json { render json: @team, status: :created }
-      end
-    else
-      respond_to do |format|
-        format.json { render json: @team.errors, status: :unprocessable_entity }
-      end
-    end
+    @team = Team.new(create_params)
+    @team.save!
   end
-
- 
 
   private
 
   def create_params
-    params.require(:team).permit(:name) 
+    params.require(:team).permit(:name)
   end
-      
 
- 
-
- 
-
+  def set_team
+    @teams = Team.find(params[:id])
+  end
 end

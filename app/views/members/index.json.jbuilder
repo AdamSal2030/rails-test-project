@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.array! @member do |member|
   json.team_id member.team_id
   json.id member.id

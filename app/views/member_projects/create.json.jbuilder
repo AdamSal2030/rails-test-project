@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.project do
   json.id @project.id
   json.name @project.name
@@ -8,4 +10,4 @@ json.member do
   json.name @member.first_name
 end
 
-json.message "Member added to project successfully"
+json.message 'Member added to project successfully'
